@@ -1,0 +1,49 @@
+.nav_gaction li {
+    float: left;
+    list-style: none;
+    margin-left: 20px;
+}
+
+.nav_gaction li a{
+    color:#fff;
+    text-decoration: none;
+    font-size: 24px;
+}
+header {
+    background-color: #46b0f0;
+}
+.clear{clear: both;}
+.nav_gaction{    text-align: right;}
+.nav_gaction ul{
+    text-align: right;
+    display: inline-block;
+}
+.logo_header img {
+    width: 28%;
+}
+
+
+.icon-green {
+    color: green;
+  }
+  .icon-red {
+    color: red;
+  }
+  
+  .finish{
+      margin: auto;
+      width: 200px;
+      height: 200px;
+      text-align: center;
+      background: chocolate;
+      font-size: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+  .finish-btn{
+
+      font-size: 2rem;
+      padding: 5px;
+  }
+ 
