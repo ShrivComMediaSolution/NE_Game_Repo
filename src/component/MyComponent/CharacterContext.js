@@ -19,13 +19,14 @@ export function CharacterProvider({ children }) {
 
   var alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const [round,setRound]=useState(()=>1)
-  const {loser} = useTimerConsumer();
+  const {loser,isActive} = useTimerConsumer();
   const [once, setOnce] = useState(() => { return false })
 
    useEffect(()=>{
     let c=getRandomChar();
+    console.log("inside useEffect getrandomchar c=",c)
     setInputText(c)
-  },[loser]) 
+  },[isActive]) 
 
   const getRandomChar = () => {
     let char = '';
@@ -55,7 +56,9 @@ export function CharacterProvider({ children }) {
    const myTurn = (e) => {
     let currentChar = e.target.outerText;
     currentChar = currentChar.charAt(currentChar.length - 1)
+    console.log("myturn inputtext=",currentChar)
     setInputText(pre => pre + currentChar);
+    console.log("now inputText=",inputText)
     resetTime()
     setOnce(true)
   } 

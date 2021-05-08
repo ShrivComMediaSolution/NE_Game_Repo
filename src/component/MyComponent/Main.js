@@ -21,13 +21,16 @@ export const Main = React.memo(() => {
 
   const [wordList, setWordList] = useState([])
   const [loading, setLoading] = useState(false)
-
+  useEffect(()=>{
+    console.log("inputText updated=",inputText)
+  },[inputText])
 //Fetching Data API
 useEffect(async() => {
   if(inputText.length===2){ 
     console.log("before calling get word",inputText,",",inputText.length)
 
-    {loser.out && setLoading(true)
+    //{loser.out && 
+    setLoading(true)
 
       const searchWord={
         "word":`${inputText}`,
@@ -56,7 +59,7 @@ useEffect(async() => {
       }
       setLoading(false)
        
-  }
+  //}
     
 }
   
@@ -66,8 +69,10 @@ useEffect(async() => {
 
 
 useEffect(()=>{
+  console.log("calling turn controler from useEffect")
   turnControler();
-},[wordList])
+  console.log("Exit useEffect after calling turn contlr")
+},[wordList,inputText])
 
 /* useEffect(()=>{
   computerTurn()
@@ -126,10 +131,12 @@ useEffect(() => {
 const callMyStopFun=()=>{
   clearTime()
 }
+
+
 ///////////////////////////////////////////
 
   const computerTurn=()=>{
-   
+   console.log("inside computer turn")
     once && setTimeout(() => {
      
       setLoser({name:'Computer',out:false});
@@ -139,6 +146,7 @@ const callMyStopFun=()=>{
       char=char.charAt(0).toUpperCase()
       console.log("next computer char=",char)
       setInputText(pre => pre + char);
+      console.log("computer added guesschar",char,",",inputText)
       //setOnce(false)
      
     }, 2000)
@@ -160,23 +168,29 @@ const callMyStopFun=()=>{
 
   const turnControler=()=>{
     
+    console.log("inside turn controler  1 check word exist",inputText)
     if((loser.name==='You' || loser.name==='Computer') && wordList.length>0 && once){
+      
       val=wordList.find((item)=>{
         //console.log("val=",item.word)
         return item.word.toUpperCase()===inputText.toUpperCase()
       })
     
       if(val){
-        console.log("word found val=",val)
+        console.log("word Exist in list=",val)
         setLoser(pre=>({...loser,out:true}));
         setIsActive(false)
         setOnce(false)
         clearTimeout()
         return 
       }
+      else{
+        console.log("inside turn controler word not exist  val= ",val)
+      }
     }
     
       if(once && wordList.length>0){
+        console.log("inside turn controler calling computer turn")
       computerTurn()
     }
     /* if(len<=0){
@@ -198,7 +212,7 @@ const callMyStopFun=()=>{
   
   return (
     <Fragment>
-      {JSON.stringify(wordList)}
+      {/* {JSON.stringify(wordList)} */}
         <Vscomputer inputText={inputText} val={val}/>
     </Fragment>
 
