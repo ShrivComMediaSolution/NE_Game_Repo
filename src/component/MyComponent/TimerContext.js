@@ -32,7 +32,7 @@ export function TimerProvider({ children }) {
   }, [isActive,seconds]);
 
   function resetTime() {
-    clearTimeout(myVar)
+    //clearTimeout(myVar)
     setSeconds(30)
   }
 

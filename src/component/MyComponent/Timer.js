@@ -15,11 +15,12 @@ export const Timer = () => {
   const {setLoser,resetTime,setIsActive}=useTimerConsumerUpdate();
 
   const {round}=useCharacterConsumer();
-    const {setRound,setInputText}=useCharacterConsumerUpdate();
+    const {setRound,setInputText,setRoundList}=useCharacterConsumerUpdate();
     const history = useHistory()
     const [finish,setFinish]=useState(false)
 
   const onClick=()=>{
+  
     setLoser({name:'You',out:false})
     setRound(pre=>pre+1)
     setIsActive(true)
@@ -27,7 +28,7 @@ export const Timer = () => {
   }
 
   useEffect(() => {
-    if(round>2){
+    if(round>4){
         setFinish(true)
         setIsActive(false)
     }   

@@ -5,7 +5,7 @@ import { useTimerConsumer, useTimerConsumerUpdate } from './TimerContext'
 import {useCharacterConsumer,useCharacterConsumerUpdate} from './CharacterContext'
 
 
-var val;
+var found,notfound;
 export const Main = React.memo(() => {
 //console.log("Main rendring")
 
@@ -74,50 +74,6 @@ useEffect(()=>{
   console.log("Exit useEffect after calling turn contlr")
 },[wordList,inputText])
 
-/* useEffect(()=>{
-  computerTurn()
-},[once]) */
-
-
-/* useEffect((inputText) => {
-  console.log("before calling get word",inputText)
-  if(inputText===2){
-    console.log("calling get word")
-      getWordList(inputText)
-  }
-}, [inputText])
-
-  const getWordList=async(search)=>{
-    console.log("INput text=",search,",",search.length)
-    {loser.out && setLoading(true)
-
-      const searchWord={
-        "word":`${search}`,
-        "limit":"50"
-      }
-      const config={
-        headers: {
-          'APPKEY': 'Py9YJXgBecbbqxjRVaHarcSnJyuzhxGqJTkY6xKZRfrdXFy72HPXvFRvfEjy'
-        }
-      }
-      const res =await axios.post(`https://theneverendingwordgame.com/ne_game_api/api/get/dictionary/words`,searchWord,
-        config)
-        
-      
-      //console.log("NEW API WORD+=",res.data.data[0].word)
-      if(res.data.status===400){
-            console.log("Status:",res.data.status,"Error_message:",res.data.error_message)
-          setResult('lose')
-      }else if(res.data.status===200){
-        console.log("WORD_LIST=",res.data.data)
-          setWordList(res.data.data)
-      }
-      setLoading(false)
-      turnControler(res.data.data,res.data.data.length);  
-  }
-}
-
- */
 
   
 useEffect(() => {
@@ -146,6 +102,7 @@ const callMyStopFun=()=>{
       char=char.charAt(0).toUpperCase()
       console.log("next computer char=",char)
       setInputText(pre => pre + char);
+      resetTime()
       console.log("computer added guesschar",char,",",inputText)
       //setOnce(false)
      
@@ -160,7 +117,7 @@ const callMyStopFun=()=>{
         const randomword = Math.floor(Math.random() * wordList.length);
         console.log("INFO=",wordList,",",wordList.length,",",randomword)
         const guesschar=wordList[randomword].word.charAt((inputText.length))
-        console.log("gusschar=",guesschar)
+        console.log("computer picked letter from=",wordList[randomword].word,",",guesschar)
         setOnce(false)
         return guesschar
         
@@ -169,23 +126,34 @@ const callMyStopFun=()=>{
   const turnControler=()=>{
     
     console.log("inside turn controler  1 check word exist",inputText)
-    if((loser.name==='You' || loser.name==='Computer') && wordList.length>0 && once){
+    if((loser.name==='You' || loser.name==='Computer') && wordList.length>0){
       
-      val=wordList.find((item)=>{
-        //console.log("val=",item.word)
-        return item.word.toUpperCase()===inputText.toUpperCase()
+      found=wordList.find((item)=>{
+        console.log("search=",inputText," in ",item.word,",",item.word.substring(0,inputText.length))
+        return (item.word.toUpperCase()===inputText.toUpperCase())
       })
+
+      if(!found){
+      notfound=wordList.find((item)=>{
+              console.log("notfound=",inputText.toUpperCase(),"===",item.word.substring(0,inputText.length).toUpperCase(),",",inputText.toUpperCase()===item.word.substring(0,inputText.length).toUpperCase())
+              return (((inputText.toUpperCase()===item.word.substring(0,inputText.length).toUpperCase())))
+          
+            })
+      }
+      
     
-      if(val){
-        console.log("word Exist in list=",val)
+      if(found || !notfound){
+        console.log("word Found=",found,",",notfound)
+        console.log("user=",loser.name,",",loser.out)
         setLoser(pre=>({...loser,out:true}));
+        console.log("now user=",loser.name,",",loser.out)
         setIsActive(false)
         setOnce(false)
         clearTimeout()
         return 
       }
       else{
-        console.log("inside turn controler word not exist  val= ",val)
+        console.log("inside turn controler word not exist  val= ",found,",",notfound)
       }
     }
     
@@ -193,27 +161,13 @@ const callMyStopFun=()=>{
         console.log("inside turn controler calling computer turn")
       computerTurn()
     }
-    /* if(len<=0){
-      clearTimeout()
-    } */
   }
 
-
-  /* const myTurn = (e) => {
-    let currentChar = e.target.outerText;
-    currentChar = currentChar.charAt(currentChar.length - 1)
-    setInputText(pre => pre + currentChar);
-    resetTime()
-    setOnce(true)
-  } */
-  
-  /*console.log("loserName=",loser.name,", loser.Out",loser.out)
-  console.log("inputText=",inputText)*/
   
   return (
     <Fragment>
       {/* {JSON.stringify(wordList)} */}
-        <Vscomputer inputText={inputText} val={val}/>
+        <Vscomputer inputText={inputText} val={found}/>
     </Fragment>
 
   )

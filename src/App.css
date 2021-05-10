@@ -46,4 +46,8 @@ header {
       font-size: 2rem;
       padding: 5px;
   }
- 
+ .main-input{
+     height: 40px;
+     font-size: 3rem;
+     font-weight: bold;
+ }
